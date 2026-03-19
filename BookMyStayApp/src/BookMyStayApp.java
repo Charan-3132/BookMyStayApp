@@ -3,8 +3,8 @@ import java.util.HashMap;
 /**
  * BookMyStayApp
  *
- * Demonstrates centralized inventory management using HashMap.
- * Replaces scattered availability variables with a single source of truth.
+ * Demonstrates read-only room search using centralized inventory.
+ * Only available rooms are displayed without modifying system state.
  *
  * @author Charan
  * @version 1.0
@@ -53,35 +53,41 @@ class SuiteRoom extends Room {
     }
 }
 
-// Inventory Class (NEW)
+// Inventory Class
 class RoomInventory {
 
     private HashMap<String, Integer> availability;
 
-    // Constructor initializes inventory
     public RoomInventory() {
         availability = new HashMap<>();
 
         availability.put("Single Room", 5);
         availability.put("Double Room", 3);
-        availability.put("Suite Room", 2);
+        availability.put("Suite Room", 0); // intentionally unavailable
     }
 
-    // Get availability
     public int getAvailability(String roomType) {
         return availability.getOrDefault(roomType, 0);
     }
+}
 
-    // Update availability
-    public void updateAvailability(String roomType, int count) {
-        availability.put(roomType, count);
-    }
+// Search Service (NEW)
+class RoomSearchService {
 
-    // Display full inventory
-    public void displayInventory() {
-        System.out.println("\n--- Current Room Inventory ---");
-        for (String key : availability.keySet()) {
-            System.out.println(key + " → " + availability.get(key));
+    public void searchAvailableRooms(Room[] rooms, RoomInventory inventory) {
+
+        System.out.println("\n--- Available Rooms ---");
+
+        for (Room room : rooms) {
+
+            int available = inventory.getAvailability(room.getType());
+
+            // Validation: show only available rooms
+            if (available > 0) {
+                room.displayDetails();
+                System.out.println("Available: " + available);
+                System.out.println();
+            }
         }
     }
 }
@@ -91,35 +97,24 @@ public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        System.out.println("Welcome to BookMyStay - Centralized Inventory");
+        System.out.println("Welcome to BookMyStay - Room Search");
 
-        // Create room objects
-        Room single = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suite = new SuiteRoom();
+        // Room objects
+        Room[] rooms = {
+                new SingleRoom(),
+                new DoubleRoom(),
+                new SuiteRoom()
+        };
 
-        // Initialize inventory
+        // Inventory (state holder)
         RoomInventory inventory = new RoomInventory();
 
-        // Display room details with availability
-        System.out.println("\n--- Room Details ---");
+        // Search Service (read-only)
+        RoomSearchService searchService = new RoomSearchService();
 
-        single.displayDetails();
-        System.out.println("Available: " + inventory.getAvailability(single.getType()));
+        // Perform search
+        searchService.searchAvailableRooms(rooms, inventory);
 
-        System.out.println();
-
-        doubleRoom.displayDetails();
-        System.out.println("Available: " + inventory.getAvailability(doubleRoom.getType()));
-
-        System.out.println();
-
-        suite.displayDetails();
-        System.out.println("Available: " + inventory.getAvailability(suite.getType()));
-
-        // Show full inventory
-        inventory.displayInventory();
-
-        System.out.println("\nApplication Terminated");
+        System.out.println("Search Completed (No changes made to inventory)");
     }
 }
