@@ -1,43 +1,30 @@
 import java.util.Scanner;
 
 /**
- * USE CASE 10: Payment Simulation
+ * USE CASE 11: Exception Handling
  */
 public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        System.out.println("BOOKMYSTAY - USE CASE 10: PAYMENT SYSTEM");
+        System.out.println("BOOKMYSTAY - USE CASE 11: EXCEPTION HANDLING");
 
         Scanner sc = new Scanner(System.in);
 
-        double amount = 5000;
+        try {
+            System.out.print("Enter number of rooms to book: ");
+            int rooms = sc.nextInt();
 
-        System.out.println("Booking Amount: ₹" + amount);
+            if (rooms <= 0) {
+                throw new IllegalArgumentException("Rooms must be greater than 0");
+            }
 
-        System.out.println("\nSelect Payment Method:");
-        System.out.println("1. UPI");
-        System.out.println("2. Credit Card");
-        System.out.println("3. Debit Card");
+            System.out.println("Rooms booked successfully: " + rooms);
 
-        int choice = sc.nextInt();
-
-        switch (choice) {
-            case 1:
-                System.out.println("Processing UPI Payment...");
-                break;
-            case 2:
-                System.out.println("Processing Credit Card Payment...");
-                break;
-            case 3:
-                System.out.println("Processing Debit Card Payment...");
-                break;
-            default:
-                System.out.println("Invalid Payment Method!");
-                return;
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
         }
 
-        System.out.println("✅ Payment Successful!");
-        System.out.println("Booking Confirmed 🎉");
+        System.out.println("Program continues safely...");
     }
 }
