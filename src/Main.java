@@ -1,30 +1,50 @@
-import java.util.Scanner;
+import java.util.*;
 
 /**
- * USE CASE 11: Exception Handling
+ * USE CASE 12: Final Integration
  */
 public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        System.out.println("BOOKMYSTAY - USE CASE 11: EXCEPTION HANDLING");
+        System.out.println("BOOKMYSTAY - USE CASE 12: FINAL SYSTEM");
 
         Scanner sc = new Scanner(System.in);
 
-        try {
-            System.out.print("Enter number of rooms to book: ");
-            int rooms = sc.nextInt();
+        ArrayList<String> hotels = new ArrayList<>();
+        hotels.add("Taj Hotel");
+        hotels.add("Oberoi");
+        hotels.add("ITC Grand");
 
-            if (rooms <= 0) {
-                throw new IllegalArgumentException("Rooms must be greater than 0");
+        HashSet<String> bookings = new HashSet<>();
+
+        try {
+            System.out.println("\nAvailable Hotels:");
+            for (String h : hotels) {
+                System.out.println(h);
             }
 
-            System.out.println("Rooms booked successfully: " + rooms);
+            System.out.print("\nEnter hotel name to book: ");
+            String choice = sc.nextLine();
+
+            if (!hotels.contains(choice)) {
+                throw new Exception("Hotel not found!");
+            }
+
+            if (bookings.contains(choice)) {
+                throw new Exception("Already booked!");
+            }
+
+            bookings.add(choice);
+
+            System.out.println("Booking successful!");
+
+            // Payment
+            System.out.println("Processing payment...");
+            System.out.println("Payment successful!");
 
         } catch (Exception e) {
-            System.out.println("❌ Error: " + e.getMessage());
+            System.out.println("❌ " + e.getMessage());
         }
-
-        System.out.println("Program continues safely...");
     }
 }
