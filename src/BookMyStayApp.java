@@ -1,120 +1,47 @@
-import java.util.HashMap;
+import java.util.Scanner;
 
 /**
- * BookMyStayApp
- *
- * Demonstrates read-only room search using centralized inventory.
- * Only available rooms are displayed without modifying system state.
- *
- * @author Charan
- * @version 1.0
+ * USE CASE 10: Payment Simulation
  */
-
-// Abstract Room Class
-abstract class Room {
-
-    protected String type;
-    protected int beds;
-    protected double price;
-
-    public Room(String type, int beds, double price) {
-        this.type = type;
-        this.beds = beds;
-        this.price = price;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void displayDetails() {
-        System.out.println("Room Type: " + type);
-        System.out.println("Beds: " + beds);
-        System.out.println("Price: ₹" + price);
-    }
-}
-
-// Room Types
-class SingleRoom extends Room {
-    public SingleRoom() {
-        super("Single Room", 1, 1500);
-    }
-}
-
-class DoubleRoom extends Room {
-    public DoubleRoom() {
-        super("Double Room", 2, 2500);
-    }
-}
-
-class SuiteRoom extends Room {
-    public SuiteRoom() {
-        super("Suite Room", 3, 5000);
-    }
-}
-
-// Inventory Class
-class RoomInventory {
-
-    private HashMap<String, Integer> availability;
-
-    public RoomInventory() {
-        availability = new HashMap<>();
-
-        availability.put("Single Room", 5);
-        availability.put("Double Room", 3);
-        availability.put("Suite Room", 0); // intentionally unavailable
-    }
-
-    public int getAvailability(String roomType) {
-        return availability.getOrDefault(roomType, 0);
-    }
-}
-
-// Search Service (NEW)
-class RoomSearchService {
-
-    public void searchAvailableRooms(Room[] rooms, RoomInventory inventory) {
-
-        System.out.println("\n--- Available Rooms ---");
-
-        for (Room room : rooms) {
-
-            int available = inventory.getAvailability(room.getType());
-
-            // Validation: show only available rooms
-            if (available > 0) {
-                room.displayDetails();
-                System.out.println("Available: " + available);
-                System.out.println();
-            }
-        }
-    }
-}
-
-// Main Class
 public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        System.out.println("Welcome to BookMyStay - Room Search");
+        System.out.println("BOOKMYSTAY - USE CASE 10: PAYMENT SYSTEM");
 
-        // Room objects
-        Room[] rooms = {
-                new SingleRoom(),
-                new DoubleRoom(),
-                new SuiteRoom()
-        };
+        Scanner sc = new Scanner(System.in);
 
-        // Inventory (state holder)
-        RoomInventory inventory = new RoomInventory();
+        double amount = 5000; // fixed booking amount
 
-        // Search Service (read-only)
-        RoomSearchService searchService = new RoomSearchService();
+        System.out.println("Booking Amount: ₹" + amount);
 
-        // Perform search
-        searchService.searchAvailableRooms(rooms, inventory);
+        System.out.println("\nSelect Payment Method:");
+        System.out.println("1. UPI");
+        System.out.println("2. Credit Card");
+        System.out.println("3. Debit Card");
 
-        System.out.println("Search Completed (No changes made to inventory)");
+        int choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                System.out.println("Processing UPI Payment...");
+                break;
+
+            case 2:
+                System.out.println("Processing Credit Card Payment...");
+                break;
+
+            case 3:
+                System.out.println("Processing Debit Card Payment...");
+                break;
+
+            default:
+                System.out.println("Invalid Payment Method!");
+                return;
+        }
+
+        // Simulate success
+        System.out.println("✅ Payment Successful!");
+        System.out.println("Booking Confirmed 🎉");
     }
 }
